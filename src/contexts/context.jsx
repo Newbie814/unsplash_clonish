@@ -8,6 +8,8 @@ export const AppProvider = ({ children }) => {
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
+    const body = document.querySelector('body');
+    body.classList.toggle('dark-mode', newDarkMode);
   };
 
   return (
