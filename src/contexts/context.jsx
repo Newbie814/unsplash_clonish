@@ -3,8 +3,16 @@ import axios from 'axios';
 
 const AppContext = createContext();
 
+const getInitialTheme = () => {
+  const prefersDarkMode = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  ).matches;
+  const savedTheme = localStorage.getItem('dark-mode') === 'true';
+  return savedTheme || prefersDarkMode;
+};
+
 export const AppProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme());
   const [searchTerm, setSearchTerm] = useState('guitar');
 
   const url = ` https://api.unsplash.com/search/photos?client_id=${
@@ -14,8 +22,9 @@ export const AppProvider = ({ children }) => {
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
-    const body = document.querySelector('body');
-    body.classList.toggle('dark-mode', newDarkMode);
+    localStorage.setItem('dark-mode', newDarkMode);
+    // const body = document.querySelector('body');
+    // body.classList.toggle('dark-mode', newDarkMode);
   };
 
   const getImages = async () => {
@@ -23,6 +32,10 @@ export const AppProvider = ({ children }) => {
 
     return result;
   };
+
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', isDarkMode);
+  }, [isDarkMode]);
 
   return (
     <AppContext.Provider
