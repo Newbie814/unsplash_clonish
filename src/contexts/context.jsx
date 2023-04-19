@@ -3,9 +3,7 @@ import axios from 'axios';
 
 const url = ` https://api.unsplash.com/search/photos?client_id=${
   import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-}&query=office`;
-
-console.log(import.meta.env.VITE_UNSPLASH_ACCESS_KEY);
+}&query=guitar`;
 
 const AppContext = createContext();
 

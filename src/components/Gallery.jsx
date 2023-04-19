@@ -3,26 +3,38 @@ import { useGlobalContext } from '../contexts/context';
 
 const Gallery = () => {
   const { getImages } = useGlobalContext();
-  const { data, isError, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['images'],
     queryFn: getImages,
   });
 
-  console.log(data);
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading)
+    return (
+      <section className='image-container'>
+        <h4>Loading</h4>
+      </section>
+    );
 
-  if (isError) return <h1>Error...</h1>;
+  if (isError)
+    return (
+      <section className='image-container'>
+        <h4>There was an error...</h4>
+      </section>
+    );
+
+  if (data.data.results.length < 1)
+    return (
+      <section className='image-container'>
+        <h4>No results found.</h4>
+      </section>
+    );
 
   return (
-    <section className='gallery'>
-      <h1>Gallery</h1>
+    <section className='image-container'>
       {data.data.results.map((image) => {
         const { id, urls, alt_description } = image;
-        return (
-          <article key={id} className='image'>
-            <img src={urls.regular} alt={alt_description} />
-          </article>
-        );
+        const url = urls?.regular;
+        return <img key={id} src={url} alt={alt_description} className='img' />;
       })}
     </section>
   );
