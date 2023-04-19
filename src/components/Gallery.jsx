@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useGlobalContext } from '../contexts/context';
 
 const Gallery = () => {
-  const { getImages } = useGlobalContext();
+  const { getImages, searchTerm } = useGlobalContext();
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['images'],
+    queryKey: ['images', searchTerm],
     queryFn: getImages,
   });
 
